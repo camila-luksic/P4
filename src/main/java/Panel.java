@@ -9,7 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class Panel extends JPanel implements PropertyChangeListener,MouseListener {
-    private static Logger logger = LogManager.getRootLogger();
+    
     private Jugador modelo;
 
 

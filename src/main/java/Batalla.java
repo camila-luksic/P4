@@ -5,12 +5,12 @@ import java.awt.*;
 
 public  class Batalla {
 
-    private static Logger logger = LogManager.getRootLogger();
+    
         private static Batalla instancia;
         private Jugador local;
         private Jugador remoto;
         private Protocolo protocolo;
-        private Color color;
+        
         public static Batalla getOrCreate() {
             if (instancia == null) {
                 instancia = new Batalla();
