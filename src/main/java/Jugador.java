@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Random;
 
 public class Jugador {
-    private static Logger logger = LogManager.getRootLogger();
+    
     private final Color color;
     private Piezas.NodoPelotita raiz;
     private PropertyChangeSupport observed;
@@ -14,7 +14,7 @@ public class Jugador {
     private int vida=3;
 
     private int width=800;
-    private int height=600;
+    
     private int mita=width/2;
 
     public Jugador(Color c) {

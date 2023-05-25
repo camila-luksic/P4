@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class Piezas <E>implements Iterable<E> {
-    private static Logger logger = LogManager.getRootLogger();
+    
     private  int x1;
     private int y1;
 
