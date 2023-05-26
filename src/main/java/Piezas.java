@@ -1,150 +1,158 @@
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import java.awt.*;
 import java.util.Iterator;
-import java.util.Random;
 
 public class Piezas <E>implements Iterable<E> {
     private static Logger logger = LogManager.getRootLogger();
-    private  int x1;
-    private int y1;
+    private Nodo<E> raiz;
+    private int tamano = 20;
+    private int width = 800;
+    private int height = 600;
+    private int mita = width / 2;
 
-    private int x2;
-    private int y2;
-   private int vida=3;
 
-    public Piezas(int x,int y , int vida){
-        this.x1=x1;
-        this.y1=y1;
-        this.x2=x2;
-        this.y2=y2;
-        this.vida=vida;
+    public Piezas(Nodo<E> raiz ) {
+        raiz = null;
     }
 
-    public int getX1() {
 
-        return x1;
-    }
-    public int getX2() {
-        return x2;
-    }
-    public int getY2(){
-         return y2;
-    }
-
-    public void setX1(int x1) {
-        this.x1 = x1;
-    }
-    public void setX2(int x2) {
-        this.x2 = x2;
-    }
-    public int getY1() {
-        return y1;
-    }
-
-    public void setY1(int y1) {
-        this.y1 = y1;
-    }
-    public void setY2(int y2) {
-        this.y2 = y2;
-    }
-    /*
-    public void insertar(E o){
-        Nodo<E> nuevo=new Nodo<> (o);
+    public void insertar(E o) {
+        Nodo<E> nuevo = new Nodo<>(raiz.getX(), raiz.getY(),o);
+        Nodo raiz = null;
         nuevo.setSiguiente(raiz);
-        raiz=nuevo;
-        E contiene = nuevo.contiene;
+        raiz = nuevo;
+        nuevo.obtenerCoordenadas();
         logger.info("Agrego las 7 piezas a cada lado");
+        raiz.notify();
 
     }
-        public void agregar (E o){
-            if (raiz == null) {
-                insertar(o);
-                return;
-            }
-            Nodo<E> actual = raiz;
-            while (actual.getSiguiente() != null) {
-                actual = actual.getSiguiente();
-            }
-            Nodo<E> nuevo = new Nodo<>(o);
-            actual.setSiguiente(nuevo);
-            logger.info("Agrego una sola pieza a cada lado");
-            paint1();
-        }
-     *//*
-        public String toString () {
-            StringBuilder resultado = new StringBuilder();
-            Nodo<E> actual = raiz;
-            while (actual != null) {
-                resultado.append(actual).append(" --> ");
-                actual = actual.getSiguiente();
-            }
-            return resultado.toString();
-        }
 
-*/
+
+    public void agregar(E o) {
+        if (raiz == null) {
+            insertar(o);
+            return;
+        }
+        Nodo<E> actual = raiz;
+        while (actual.getSiguiente() != null) {
+            actual = actual.getSiguiente();
+        }
+        Nodo<E> nuevo = new Nodo<>(actual.getX(), actual.getY(),o);
+        actual.setSiguiente(nuevo);
+        logger.info("Agrego una sola pieza a cada lado");
+
+    }
+
+    public String toString() {
+        StringBuilder resultado = new StringBuilder();
+        Nodo<E> actual = raiz;
+        while (actual != null) {
+            resultado.append(actual).append(" --> ");
+            actual = actual.getSiguiente();
+        }
+        return resultado.toString();
+    }
+
 
     @Override
-    public Iterator <E> iterator() {
-        NodoPelotita raiz = null;
-        return new PiezasIterator<>(raiz) {
-        };
+    public Iterator<E> iterator() {
+        return new PiezasIterators(raiz);
     }
 
 
-    class NodoPelotita<E> {
-        public Object contiene;
+    class Nodo<E> {
+        private int x;
+        private int y;
+        private int vida = 3;
+        private E contenido;
 
-        private Piezas pelotita;
-        private NodoPelotita siguiente;
+        private Nodo<E> siguiente;
 
 
-        public NodoPelotita(Piezas pelotita) {
-            this.pelotita=pelotita;
+        public Nodo(int x, int y,E o) {
+            contenido=o;
+            this.x = x;
+            this.y = y;
             siguiente = null;
         }
-        protected void matar(){
-            vida=0;
+
+        public int[] obtenerCoordenadas() {
+            int[] coordenadas = {x, y};
+            return coordenadas;
         }
 
-        public Piezas getPelotita() {
-            return pelotita;
+        public int getVida() {
+            return vida;
         }
 
-        public void setPelotita(Piezas pelotita) {
-            this.pelotita = pelotita;
-        }
-        public NodoPelotita getSiguiente(){
-            return siguiente;
+        public void setVida(int vida) {
+            this.vida = vida;
         }
 
-        public void setSiguiente(NodoPelotita siguiente) {
-            this.siguiente=siguiente;
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+
+        protected void matar() {
+            vida = 0;
+        }
+
+
+        public Piezas<E>.Nodo<E> getSiguiente() {
+            return (Piezas<E>.Nodo<E>) siguiente;
+        }
+
+
+        public void setSiguiente(Nodo raiz) {
         }
 
         public boolean contiene(int x, int y) {
-            return false;
+            if (x == getX() &&
+                    y == getY()) {
+                return true;
+            } else {
+                return false;
+            }
         }
+
+
+
     }
 
-    class PiezasIterator<E> implements Iterator<E> {
-        private NodoPelotita actual;
-
-        public PiezasIterator(NodoPelotita r) {
+    private class PiezasIterators implements Iterator<E> {
+        private Nodo<E> actual;
+        public PiezasIterators(Nodo<E> r) {
             actual = r;
         }
 
-        public boolean hasNext() {
-            return actual != null;
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            public E next() {
+                E obj = (E) actual.obtenerCoordenadas();
+                actual = actual.getSiguiente();
+                return obj;
+            }
+
         }
 
-        public E next() {
-            E obj = (E) actual.contiene;
-            actual = actual.getSiguiente();
-            return obj;
-        }
 
     }
-}
+
+
+
 

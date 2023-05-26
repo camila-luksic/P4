@@ -8,7 +8,7 @@ import java.util.Random;
 public class Jugador {
     private static Logger logger = LogManager.getRootLogger();
     private final Color color;
-    private Piezas.NodoPelotita raiz;
+    private Piezas.Nodo raiz;
     private PropertyChangeSupport observed;
     private int tamano=20;
     private int vida=3;
@@ -22,28 +22,32 @@ public class Jugador {
         raiz = null;
         observed = new PropertyChangeSupport(this);
         notificar();
-        paint();
+        crearPiezas();
+
     }
-        public void paint(){
-            Graphics g=null;
+
+    private void crearPiezas() {
+        Graphics g=null;
         Random random=new Random(1234);
         for (int i = 0; i <7 ; i++) {
             random=new Random(1234);
-           int  x1= random.nextInt(mita);
-           int y1 = random.nextInt(600);
-           Piezas pelotita=new Piezas<>(x1,y1,vida);
-            g.setColor(Color.BLUE);
-            g.fillOval(x1, y1, tamano, tamano);
+            int  x= random.nextInt(mita);
+            int y = random.nextInt(600);
+        g.setColor(Color.BLUE);
+        g.fillOval(x, y, tamano, tamano);
+
         }
         for (int j=0;j<7;j++) {
             int x2 = random.nextInt(mita) + mita;
             int y2 = random.nextInt(600);
-            Piezas pelotita=new Piezas<>(x2,y2,vida);
+        g.setColor(Color.RED);
+        g.fillOval(x2, y2, tamano, tamano);
 
-            g.setColor(Color.RED);
-            g.fillOval(x2, y2, tamano, tamano);
+
         }
-        }
+    }
+
+
 
 
     public void addListener(Panel jugadorPanel) {
@@ -52,6 +56,10 @@ public class Jugador {
 
     public void notificar() {
         observed.firePropertyChange("JUEGO", true, false);
+        if (raiz == null){
+            crearPiezas();
+            paint();
+        }else
         cambiarcolor();
     }
 
@@ -73,13 +81,24 @@ public class Jugador {
 
     private void cambiarcolor() {
         Graphics g=null;
+        if (vida==3){
+            g.setColor(color);
+        }
             if (vida == 2) {
                 g.setColor(Color.GRAY);
             }
             if (vida == 1) {
                 g.setColor(Color.BLACK);
             }
+            if (vida==0){
+                g.setColor(Color.WHITE);
+                raiz.matar();
+            }
         }
+
+    public void paint() {
+
+    }
 }
 
 
