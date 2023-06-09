@@ -13,7 +13,7 @@ public class Frame extends JFrame {
     private Panel panelRemoto;
 
     public Frame() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.getContentPane().setLayout(new BorderLayout());
         initMenu();
         initPanels();
